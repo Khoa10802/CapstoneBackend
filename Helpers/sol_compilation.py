@@ -1,6 +1,6 @@
 import re
 
-from solcx import install_solc_pragma, set_solc_version_pragma, compile_files
+from solcx import install_solc_pragma, set_solc_version_pragma, compile_files, compile_source
 from solcx.exceptions import SolcError, UnsupportedVersionError
 
 pragma_pattern = re.compile(
@@ -23,25 +23,24 @@ class VersionNotFoundError(Exception):
         self.message = message
         super().__init__(self.message)
 
-def get_version(file):
-    with open(file, 'r', encoding="utf-8") as f:
-        include = import_pattern.search(f.read())
-        if include:
-            raise ExternalInclusionError("File contains external libraries")
-        version = pragma_pattern.search(f.read())
-        if not version:
-            raise VersionNotFoundError("Cannot define file version")
-        return version.group(0)
+def get_version(source):
+    include = import_pattern.search(source)
+    if include:
+        raise ExternalInclusionError("File contains external libraries")
+    version = pragma_pattern.search(source)
+    if not version:
+        raise VersionNotFoundError("Cannot define file version")
+    return version.group(0)
 
-def sol_components(file):
+def sol_components(source):
     try:
         result = {}
-        version = get_version(file)
+        version = get_version(source)
         install_solc_pragma(version)
         v = set_solc_version_pragma(version)
 
-        compiled_sol = compile_files(
-            [file],
+        compiled_sol = compile_source(
+            source,
             output_values=["opcodes"],
             optimize=True,
             optimize_runs=200,
@@ -64,11 +63,10 @@ def sol_components(file):
     except UnsupportedVersionError:
         return None
 
-def package_assemble(file):
-    version, opcodes = sol_components(file)
+def package_assemble(source):
+    version, opcodes = sol_components(source)
     package = {
         'compiler-version': str(version),
         'contracts': opcodes
     }
-
     return package
