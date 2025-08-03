@@ -1,6 +1,6 @@
 import re
 
-from solcx import install_solc_pragma, set_solc_version_pragma, compile_files, compile_source
+from solcx import install_solc_pragma, set_solc_version_pragma, compile_source
 from solcx.exceptions import SolcError, UnsupportedVersionError
 
 pragma_pattern = re.compile(
