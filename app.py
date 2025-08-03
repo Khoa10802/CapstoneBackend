@@ -9,13 +9,17 @@ def index():
 
 @app.route("/upload", methods=['POST'])
 def upload():
-    if 'file' not in request.files:
-        return 'File is not found'
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return 'File is not found'
 
-    solfile = request.files['file']
-    if solfile:
-        return package_assemble(solfile)
-    return None
+        solfile = request.files['file']
+        sol_str = solfile.read().decode('utf-8')
+
+        if solfile:
+            return package_assemble(sol_str)
+
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
