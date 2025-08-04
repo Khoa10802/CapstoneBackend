@@ -1,25 +1,27 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, jsonify
+from flask_cors import CORS   # <-- thêm dòng này
 from Helpers.sol_compilation import package_assemble
 
 app = Flask(__name__)
+CORS(app)   # <-- bật CORS cho toàn bộ app
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
-    return render_template('index.html')
+    return jsonify({"message": "Backend running 🚀"})
 
-@app.route("/upload", methods=['POST'])
+@app.route("/upload", methods=["POST"])
 def upload():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            return 'File is not found'
+    if 'file' not in request.files:
+        return jsonify({"error": "File not found"}), 400
 
-        solfile = request.files['file']
-        sol_str = solfile.read().decode('utf-8')
+    solFile = request.files['file']
+    sol_str = solFile.read().decode('utf-8')
 
-        if solfile:
-            return package_assemble(sol_str)
+    if sol_str:
+        result = package_assemble(sol_str)
+        return jsonify({"status": "success", "result": result})
 
-    return render_template('index.html')
+    return jsonify({"error": "Empty file"}), 400
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
