@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS   # <-- thêm dòng này
 from solcx.exceptions import SolcError, UnsupportedVersionError
 
-from Helpers.sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
+from Compilation.sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
 
 app = Flask(__name__)
 CORS(app)   # <-- bật CORS cho toàn bộ app
