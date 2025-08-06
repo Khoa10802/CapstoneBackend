@@ -56,7 +56,7 @@ export default function UploadForm() {
         <p>Drag & drop your <strong>.sol</strong> file or{" "}
           <label className="text-blue-600 underline cursor-pointer">
             Browse
-            <input type="file" accept="text/plain, .sol, .doc, .docx, application/msword" onChange={handleFileChange} className="hidden" />
+            <input type="file" accept="text/plain, .sol, .docx, application/msword" onChange={handleFileChange} className="hidden" />
           </label>
         </p>
         <p className="text-sm text-gray-500 mt-2">Solidity smart contracts only (.sol)</p>

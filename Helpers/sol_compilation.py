@@ -51,14 +51,11 @@ def sol_components(source):
             result[contract_name] = opcodes['opcodes']
 
         return v, result
-    except ExternalInclusionError as e:
-        print(e.message)
+    except ExternalInclusionError:
         return None
-    except VersionNotFoundError as e:
-        print(e.message)
+    except VersionNotFoundError:
         return None
-    except SolcError as e:
-        print(e.message)
+    except SolcError:
         return None
     except UnsupportedVersionError:
         return None
@@ -66,7 +63,6 @@ def sol_components(source):
 def package_assemble(source):
     version, opcodes = sol_components(source)
     package = {
-        'compiler-version': str(version),
         'contracts': opcodes
     }
     return package
