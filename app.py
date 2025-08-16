@@ -1,18 +1,18 @@
 import io
 from docx import Document
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS   # <-- thêm dòng này
 from solcx.exceptions import SolcError, UnsupportedVersionError
 
 from Compilation.sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 CORS(app)   # <-- bật CORS cho toàn bộ app
 
 @app.route("/", methods=["GET"])
 def index():
-    return jsonify({"message": "Backend running 🚀"})
+    return render_template('index.html')
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -32,12 +32,12 @@ def upload():
                 docx_text.append(para.text)
             if len(docx_text) <= 1 and docx_text[0] == '':
                 return jsonify({"error": f"{sol_file.filename} is maybe empty"}), 400
-            return jsonify({"status": "success", "result": package_assemble('\n'.join(docx_text))})
+            return package_assemble('\n'.join(docx_text))
         else:
             sol_str = sol_file.read().decode('utf-8')
             if len(sol_str) <= 0:
                 return jsonify({"error": f"{sol_file.filename} is maybe empty"}), 400
-            return jsonify({"status": "success", "result": package_assemble(sol_str)})
+            return package_assemble(sol_str)
 
     except ExternalInclusionError:
         return jsonify({"error": f"{sol_file.filename} may contain external library"}), 400

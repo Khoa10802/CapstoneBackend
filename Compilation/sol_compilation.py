@@ -50,7 +50,7 @@ def sol_components(source):
             contract_name = name.split(':')[-1]
             result[contract_name] = opcodes['opcodes']
 
-        return v, result
+        return result
     except ExternalInclusionError:
         return None
     except VersionNotFoundError:
@@ -61,7 +61,7 @@ def sol_components(source):
         return None
 
 def package_assemble(source):
-    version, opcodes = sol_components(source)
+    opcodes = sol_components(source)
     package = {
         'contracts': opcodes
     }
