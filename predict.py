@@ -9,7 +9,7 @@ def normalize_opcode(opcode):
     opcode = re.sub(r"0x[0-9a-fA-F]+", "CONST", opcode)
     return opcode
 
-model_dir = os.path.join(os.path.dirname(__file__), "model_xgb")
+model_dir = os.path.join(os.path.dirname(__file__), "trained_data")
 
 xgb_model = joblib.load(os.path.join(model_dir, 'xgb_model.joblib'))
 label_binarizer = joblib.load(os.path.join(model_dir, 'label_binarizer.joblib'))
@@ -47,6 +47,6 @@ def predict_vulnerabilities(json_path: str):
     return results
 
 if __name__ == "__main__":
-    json_path = "test/sample_opcode.json"
-    results = predict_vulnerabilities(json_path)
+    test_json = "test/sample_opcode.json"
+    results = predict_vulnerabilities(test_json)
     print(results)
