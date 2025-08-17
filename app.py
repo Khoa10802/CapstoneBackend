@@ -2,13 +2,13 @@ import io
 from docx import Document
 
 from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS   # <-- thêm dòng này
+from flask_cors import CORS
 from solcx.exceptions import SolcError, UnsupportedVersionError
 
 from Compilation.sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
 
 app = Flask(__name__, template_folder="templates")
-CORS(app)   # <-- bật CORS cho toàn bộ app
+CORS(app)
 
 @app.route("/", methods=["GET"])
 def index():

@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d463d50a-dc28-4b2a-8a95-e10df4d03d53" name="Changes" comment="misc">
-      <change beforePath="$PROJECT_DIR$/predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/predict.py" afterDir="false" />
-    </list>
+    <list default="true" id="d463d50a-dc28-4b2a-8a95-e10df4d03d53" name="Changes" comment="add requirements" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,18 +35,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.app.executor": "Run",
-    "Python.predict.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "backend-test",
-    "last_opened_file_path": "C:/Users/khoad/PycharmProjects/CapstoneBackend"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.predict.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;backend-test&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/khoad/PycharmProjects/CapstoneBackend&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\khoad\PycharmProjects\CapstoneBackend" />
@@ -128,13 +126,31 @@
       <option name="project" value="LOCAL" />
       <updated>1755423789461</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix path">
+      <option name="closed" value="true" />
+      <created>1755423972124</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1755423972124</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add requirements">
+      <option name="closed" value="true" />
+      <created>1755424239016</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1755424239016</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add gitignore" />
     <MESSAGE value="add trained data" />
     <MESSAGE value="misc" />
-    <option name="LAST_COMMIT_MESSAGE" value="misc" />
+    <MESSAGE value="fix path" />
+    <MESSAGE value="add requirements" />
+    <option name="LAST_COMMIT_MESSAGE" value="add requirements" />
   </component>
 </project>
