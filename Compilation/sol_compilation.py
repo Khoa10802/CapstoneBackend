@@ -1,4 +1,4 @@
-import re
+import re, random
 
 from solcx import install_solc_pragma, set_solc_version_pragma, compile_source
 from solcx.exceptions import SolcError, UnsupportedVersionError
@@ -37,7 +37,7 @@ def sol_components(source):
         result = {}
         version = get_version(source)
         install_solc_pragma(version)
-        v = set_solc_version_pragma(version)
+        set_solc_version_pragma(version)
 
         compiled_sol = compile_source(
             source,
