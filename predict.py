@@ -15,23 +15,8 @@ xgb_model = joblib.load(os.path.join(model_dir, 'xgb_model.joblib'))
 label_binarizer = joblib.load(os.path.join(model_dir, 'label_binarizer.joblib'))
 tfidf_vectorizer = joblib.load(os.path.join(model_dir, 'vectorizer.joblib'))
 
-def predict_vulnerabilities(json_path: str):
-    if not os.path.exists(json_path):
-        raise FileNotFoundError(f"The file does not found: {json_path}")
-    
-    if os.path.getsize(json_path) == 0:
-        raise ValueError(f"The file is empty: {json_path}")
-
-    with open(json_path, "r", encoding="utf-8") as f:
-        try:
-            data = json.load(f)
-        except json.JSONDecodeError:
-            raise ValueError(f"Invalid JSON format in file: {json_path}")
-    
-    if not data or not isinstance(data, dict):
-        raise ValueError("Input JSON is empty or not a valid object.")
-
-    contracts = data.get("contracts", {})
+def predict_vulnerabilities(compiled_json: dict):
+    contracts = compiled_json.get("contracts", {})
     if not contracts:
         raise ValueError("No contracts found in JSON")
     
@@ -45,8 +30,3 @@ def predict_vulnerabilities(json_path: str):
 
         results[contract_name] = predicted_labels[0] if predicted_labels else []
     return results
-
-if __name__ == "__main__":
-    test_json = "test/sample_opcode.json"
-    results = predict_vulnerabilities(test_json)
-    print(results)
