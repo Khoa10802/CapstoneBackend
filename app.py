@@ -49,6 +49,8 @@ def upload():
         return jsonify({"error": "Compilation failed"}), 400
     except UnsupportedVersionError:
         return jsonify({"error": "Does not support this file version"}), 400
+    except ValueError:
+        return jsonify({"error": "No contracts found"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
