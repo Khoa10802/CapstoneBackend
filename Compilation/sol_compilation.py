@@ -1,4 +1,4 @@
-import re
+import re, random
 
 from solcx import install_solc_pragma, set_solc_version_pragma, compile_source
 from solcx.exceptions import SolcError, UnsupportedVersionError
@@ -37,7 +37,7 @@ def sol_components(source):
         result = {}
         version = get_version(source)
         install_solc_pragma(version)
-        v = set_solc_version_pragma(version)
+        set_solc_version_pragma(version)
 
         compiled_sol = compile_source(
             source,
@@ -50,7 +50,7 @@ def sol_components(source):
             contract_name = name.split(':')[-1]
             result[contract_name] = opcodes['opcodes']
 
-        return v, result
+        return result
     except ExternalInclusionError:
         return None
     except VersionNotFoundError:
@@ -61,7 +61,7 @@ def sol_components(source):
         return None
 
 def package_assemble(source):
-    version, opcodes = sol_components(source)
+    opcodes = sol_components(source)
     package = {
         'contracts': opcodes
     }
