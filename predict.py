@@ -1,9 +1,8 @@
 import re
-import json
 import os
 import joblib
 
-from Compilation.sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
+from sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
 from solcx.exceptions import SolcError, UnsupportedVersionError
 
 # ─────────────────────────────────────────────
