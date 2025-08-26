@@ -10,7 +10,7 @@ from solcx.exceptions import SolcError, UnsupportedVersionError
 from sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
 from predict import predict_vulnerabilities, predict_contract  # Gộp cả 2 hàm predict
 
-application = Flask(__name__, template_folder="templates")
+app = Flask(__name__, template_folder="templates")
 CORS(app)
 
 # ─────────────────────────────────────────────
@@ -88,4 +88,4 @@ def predict():
 
 # ─────────────────────────────────────────────
 if __name__ == "__main__":
-    application.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000)
