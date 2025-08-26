@@ -7,7 +7,7 @@ from docx import Document
 from solcx.exceptions import SolcError, UnsupportedVersionError
 
 # Custom imports
-from Compilation.sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
+from sol_compilation import package_assemble, ExternalInclusionError, VersionNotFoundError
 from predict import predict_vulnerabilities, predict_contract  # Gộp cả 2 hàm predict
 
 app = Flask(__name__, template_folder="templates")
