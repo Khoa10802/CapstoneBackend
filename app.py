@@ -5,7 +5,6 @@ import threading  # 🆕 For background cleanup
 
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-from docx import Document
 from solcx.exceptions import SolcError, UnsupportedVersionError
 
 # Custom imports
@@ -18,12 +17,12 @@ CORS(app)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# 🆕 File cleanup settings
+# File cleanup settings
 MAX_FILE_AGE = 3600  # 1 hour in seconds
 CLEANUP_INTERVAL = 600  # check every 10 minutes
 
 # ─────────────────────────────────────────────
-# 🆕 Background cleanup function
+# Background cleanup function
 def cleanup_old_files():
     while True:
         now = time.time()
@@ -62,24 +61,16 @@ def upload():
     try:
         start_time = time.time()  # ⏱️ Bắt đầu tính thời gian
 
-        # ✅ Always save file first, so rescan can use it later
+        # Save file then rescan
         file_path = os.path.join(UPLOAD_FOLDER, sol_file.filename)
         sol_file.save(file_path)
 
-        if sol_file.filename.lower().endswith('.docx'):
-            # Read and extract text from docx
-            doc = Document(file_path)
-            docx_text = [para.text for para in doc.paragraphs]
-            if len(docx_text) <= 1 and docx_text[0] == '':
-                return jsonify({"error": f"{sol_file.filename} is maybe empty"}), 400
-            compiled_sol = package_assemble('\n'.join(docx_text))
-        else:
-            # Handle raw Solidity (.sol) files
-            with open(file_path, "r", encoding="utf-8") as f:
-                sol_str = f.read()
-            if len(sol_str) <= 0:
-                return jsonify({"error": f"{sol_file.filename} is maybe empty"}), 400
-            compiled_sol = package_assemble(sol_str)
+        # Handle raw Solidity (.sol) files
+        with open(file_path, "r", encoding="utf-8") as f:
+            sol_str = f.read()
+        if len(sol_str) <= 0:
+            return jsonify({"error": f"{sol_file.filename} is maybe empty"}), 400
+        compiled_sol = package_assemble(sol_str)
 
         # Run ML prediction
         result = predict_vulnerabilities(compiled_sol)
@@ -87,7 +78,7 @@ def upload():
         end_time = time.time()
         duration_seconds = round(end_time - start_time, 2)  # ⏱️ Tính thời gian chạy
 
-        # ✅ Add metadata for frontend
+        # Add metadata for frontend
         result["duration"] = duration_seconds
         result["filename"] = sol_file.filename
 
@@ -126,20 +117,12 @@ def rescan():
     try:
         start_time = time.time()
 
-        if filename.lower().endswith('.docx'):
-            # Reload from saved docx
-            doc = Document(file_path)
-            docx_text = [para.text for para in doc.paragraphs]
-            if len(docx_text) <= 1 and docx_text[0] == '':
-                return jsonify({"error": f"{filename} is maybe empty"}), 400
-            compiled_sol = package_assemble('\n'.join(docx_text))
-        else:
-            # Reload from saved .sol file
-            with open(file_path, "r", encoding="utf-8") as f:
-                sol_str = f.read()
-            if len(sol_str) <= 0:
-                return jsonify({"error": f"{filename} is maybe empty"}), 400
-            compiled_sol = package_assemble(sol_str)
+        # Reload from saved .sol file
+        with open(file_path, "r", encoding="utf-8") as f:
+            sol_str = f.read()
+        if len(sol_str) <= 0:
+            return jsonify({"error": f"{filename} is maybe empty"}), 400
+        compiled_sol = package_assemble(sol_str)
 
         # Run ML prediction
         result = predict_vulnerabilities(compiled_sol)
