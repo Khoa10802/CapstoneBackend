@@ -60,23 +60,14 @@ ExecStart=/home/ubuntu/CapstoneBackend/.venv/bin/gunicorn --workers 3 --bind 0.0
 WantedBy=multi-user.target
 ```
 ## 6. Start and Enable Flask Service
-- Reload systemd
 ``` bash
 sudo systemctl daemon-reload
-```
-
-- Start Flask service
-``` bash
 sudo systemctl start flask-app
-```
-
-- Enable to start on boot
-``` bash
 sudo systemctl enable flask-app
 ```
 
-- Check status
 ``` bash
+# Check status
 sudo systemctl status flask-app
 ```
 
@@ -87,19 +78,13 @@ sudo ufw enable
 sudo ufw allow 5000
 ```
 
-- Check firewall status 
 ``` bash
+# Check firewall status 
 sudo ufw status
 ```
 ## 8. Restart nginx
-- Restart nginx
 ``` bash
 sudo systemctl restart nginx
-```
-
-- Enable nginx to start on boot
-``` bash
-sudo systemctl enable nginx
 ```
 
 # _Troubleshooting_
