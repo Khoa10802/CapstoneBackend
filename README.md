@@ -35,7 +35,7 @@ sudo apt install nginx -y
 
 - Install `gunicorn`
 ``` bash
-git install gunicorn
+pip install gunicorn
 ```
 ## 5. Edit Gunicorn Config File
 - Create config file
