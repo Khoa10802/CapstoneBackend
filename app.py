@@ -1,6 +1,7 @@
 import io
 import os
 import time  # 🆕 Thêm để đo thời gian
+import threading  # 🆕 For background cleanup
 
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
@@ -16,6 +17,30 @@ CORS(app)
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# 🆕 File cleanup settings
+MAX_FILE_AGE = 3600  # 1 hour in seconds
+CLEANUP_INTERVAL = 600  # check every 10 minutes
+
+# ─────────────────────────────────────────────
+# 🆕 Background cleanup function
+def cleanup_old_files():
+    while True:
+        now = time.time()
+        for filename in os.listdir(UPLOAD_FOLDER):
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            if os.path.isfile(file_path):
+                file_age = now - os.path.getmtime(file_path)
+                if file_age > MAX_FILE_AGE:
+                    try:
+                        os.remove(file_path)
+                        print(f"Deleted old file: {file_path}")
+                    except Exception as e:
+                        print(f"Failed to delete {file_path}: {e}")
+        time.sleep(CLEANUP_INTERVAL)
+
+# 🆕 Start cleanup thread as daemon
+threading.Thread(target=cleanup_old_files, daemon=True).start()
 
 # ─────────────────────────────────────────────
 # GET route to serve the main page
@@ -66,6 +91,10 @@ def upload():
         result["duration"] = duration_seconds
         result["filename"] = sol_file.filename
 
+        # Add expiration timestamp (1 hour from file upload)
+        expiration_time = time.time() + 3600  # 1 hour in seconds
+        result["expires_at"] = expiration_time
+        
         return result
 
     # Handle custom errors
@@ -92,7 +121,7 @@ def rescan():
     file_path = os.path.join(UPLOAD_FOLDER, filename)
 
     if not os.path.exists(file_path):
-        return jsonify({"error": f"File {filename} not found"}), 404
+        return jsonify({"error": f"File {filename} not found (may have expired)"}), 404
 
     try:
         start_time = time.time()
