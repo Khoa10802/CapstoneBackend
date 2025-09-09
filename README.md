@@ -28,15 +28,11 @@ pip install -r requirements.txt
 ```
 
 ## 4. Install Gunicorn & nginx
-- Install `nginx`
 ``` bash
 sudo apt install nginx -y
+pip install gunicorn
 ```
 
-- Install `gunicorn`
-``` bash
-git install gunicorn
-```
 ## 5. Edit Gunicorn Config File
 - Create config file
 ``` bash
