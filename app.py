@@ -93,12 +93,17 @@ def upload():
         return jsonify({"error": f"{sol_file.filename} may contain external library"}), 400
     except VersionNotFoundError:
         return jsonify({"error": f"{sol_file.filename} may not define pragma version"}), 400
-    except SolcError:
-        return jsonify({"error": "Compilation failed"}), 400
+    except SolcError as e:
+        return jsonify({"error": f"Uncompilable Solidity file (check syntax and pragma): {str(e)}"}), 400
     except UnsupportedVersionError:
         return jsonify({"error": "Does not support this file version"}), 400
-    except ValueError:
-        return jsonify({"error": "No contracts found"}), 400
+    except ValueError as e:
+        # Distinguish truly empty vs. hidden compiler error
+        msg = str(e).lower()
+        if "no contract" in msg or "no contracts" in msg:
+            return jsonify({"error": "No contract found in this Solidity file"}), 400
+        else:
+            return jsonify({"error": f"Unexpected compilation error: {str(e)}"}), 400
 
 # ─────────────────────────────────────────────
 # POST route to re-run prediction on an already uploaded file
