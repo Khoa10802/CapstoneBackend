@@ -127,6 +127,10 @@ def rescan():
         # Run ML prediction
         result = predict_vulnerabilities(compiled_sol)
 
+        # 🆕 Deduplicate vulnerabilities
+        if isinstance(result, dict) and "vulnerabilities" in result:
+            result["vulnerabilities"] = list(set(result["vulnerabilities"]))
+
         end_time = time.time()
         duration_seconds = round(end_time - start_time, 2)
 
